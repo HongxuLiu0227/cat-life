@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import { cats } from './data/cats.js';
 import Home from './pages/Home.jsx';
+import Room from './pages/Room.jsx';
 import Gallery from './components/Gallery.jsx';
 import Guestbook from './components/Guestbook.jsx';
 import { useTheme } from './context/ThemeContext.jsx';
@@ -9,6 +10,7 @@ import { useTheme } from './context/ThemeContext.jsx';
 // 导航配置：路径 + 显示文字。加页面时在这里加一项
 const navItems = [
   { path: '/', label: '🏠 主页' },
+  { path: '/room', label: '🎮 猫窝' },
   { path: '/gallery', label: '📷 相册' },
   { path: '/guestbook', label: '💬 留言板' },
 ];
@@ -79,6 +81,7 @@ export default function App() {
         <main style={{ flex: 1, padding: '32px 24px' }}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/room" element={<Room />} />
             <Route path="/gallery" element={<Gallery cats={cats} />} />
             <Route path="/guestbook" element={<Guestbook />} />
           </Routes>
