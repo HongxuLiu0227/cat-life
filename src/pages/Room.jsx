@@ -16,6 +16,13 @@ const ACT_EFFECT = {
   play:  s => ({ ...s, mood: Math.min(100, s.mood + 10) }),
 };
 
+// 根据行为 + 心跳节拍算出当前该显示哪一帧
+function frameOf(action, tick) {
+  if (action === 'walk') return tick % 2 === 0 ? 'walkA' : 'walkB';  // 快速换腿
+  if (action === 'sleep') return 'sleep';
+  return tick % 4 < 2 ? 'idleA' : 'idleB';  // 待机时慢慢摇尾巴
+}
+
 export default function Room() {
   const { colors } = useTheme();
   const [selected, setSelected] = useState('xxg');  // 当前选中的猫
@@ -40,6 +47,13 @@ export default function Room() {
   // cats 的最新值镜像到 ref，供"大脑"定时器读取（避免闭包拿旧值）
   const catsRef = useRef(cats);
   useEffect(() => { catsRef.current = cats; });
+
+  // 动画心跳：每 300ms 跳一拍，所有换帧都跟着它走
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setTick(n => n + 1), 300);
+    return () => clearInterval(t);
+  }, []);
 
   // 指挥一只猫：走到目标点 → 做动作 → 数值变化 → 回到待机
   function command(id, act) {
@@ -138,7 +152,7 @@ export default function Room() {
               borderRadius: 8,
             }}
           >
-            <PixelCat catId={id} px={7} />
+            <PixelCat catId={id} frame={frameOf(cats[id].action, tick)} px={6} />
             {/* 行为气泡 */}
             {cats[id].action === 'sleep' && (
               <span style={{ position: 'absolute', top: -22, right: -14, fontSize: 18, animation: 'floatUp 1.6s infinite' }}>💤</span>
