@@ -1,0 +1,7 @@
+/* 全局样式：颜色与 theme.js 保持一致（改色先改 theme.js，这里同步） */
+body {
+  margin: 0;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #fdf6ec;  /* colors.bg：奶油底 */
+  color: #3d2c29;       /* colors.text：深棕黑 */
+}
