@@ -48,6 +48,8 @@ export const cats = [
       // 视频
       { type: 'video', url: p('photos/dgg/v1.mp4') },
       { type: 'video', url: p('photos/dgg/v2.mp4') },
+      { type: 'video', url: p('photos/dgg/v3.mp4') },
+      { type: 'video', url: p('photos/dgg/v4.mp4') },
     ],
   },
   {
