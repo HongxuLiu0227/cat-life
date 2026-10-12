@@ -1,0 +1,40 @@
+# GitHub Actions 工作流：每次 push 到 main，自动构建并部署到 GitHub Pages
+# 这就是 CI/CD：代码一推，流水线自动跑，不用人管
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+# 部署 Pages 需要的权限
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取代码
+      - uses: actions/checkout@v4
+
+      # 2. 装 Node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3. 装依赖并构建（BASE 指定子路径前缀，对应 vite.config.js）
+      - run: npm ci
+      - run: npm run build
+        env:
+          BASE: /cat-life/
+
+      # 4. SPA 路由回退：GitHub Pages 找不到路径时会返回 404.html，
+      #    把 index.html 复制一份成 404.html，React Router 就能接管所有路径
+      - run: cp dist/index.html dist/404.html
+
+      # 5. 上传构建产物并部署到 Pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - uses: actions/deploy-pages@v4
