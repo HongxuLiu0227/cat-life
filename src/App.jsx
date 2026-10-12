@@ -21,7 +21,9 @@ export default function App() {
 
   return (
     // BrowserRouter：接管浏览器的地址栏，URL 变化时切换组件（不刷新页面）
-    <BrowserRouter>
+    // basename 告诉路由器"网站部署在子路径下"（GitHub Pages 是 /cat-life/，
+    // Vercel 是 /），否则点导航会跳到错误的地址
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div style={{ display: 'flex', minHeight: '100vh', background: colors.bg }}>
 
         {/* 左侧导航栏：固定在左边，不随内容滚动 */}
